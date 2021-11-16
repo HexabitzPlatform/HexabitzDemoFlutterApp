@@ -1,6 +1,6 @@
 # hexabitz_demo_app
 
-an app to communication to Hexabitz modules
+An app to communicate with Hexabitz modules
 
 ## Getting Started
 
