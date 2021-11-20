@@ -3,9 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:hexabitz_demo_app/FLUTTER_WIRELESS_LIB/Message.dart';
 import 'package:hexabitz_demo_app/providers/ble_connection_provider.dart';
+import 'package:hexabitz_demo_app/providers/wifi_connection_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+String _connectionType = "NON";
+String get connectionType {
+  return _connectionType;
+}
+
+set connectionType(String type) {
+  _connectionType = type;
+}
 
 Future<bool> checkPermission(BuildContext ctx) async {
   //This for check Location permission
@@ -87,6 +97,7 @@ void showToast(String text) {
 void sendMessage(BuildContext context, int destination, int source, int code,
     List<int> payload) {
   final bleConnection = Provider.of<BleConnection>(context, listen: false);
+  final wifiConnection = Provider.of<WIFIConnection>(context);
   String opt8NextMessage = "0";
   String opt67ResponseOptions = "01";
   String opt5Reserved = "0";
@@ -113,15 +124,22 @@ void sendMessage(BuildContext context, int destination, int source, int code,
   print("message:${message.getMessage()}");
   //connection.sendMessage(message.getMessage());
   //connection.test();
-
-  if (!bleConnection.isReady)
-    showToast("please connect with module to send data");
-  else {
-    checkPermission(context).then((value) => {
-          if (value)
-            bluetoothLocationAreEnable(context).then((value) {
-              bleConnection.writeData(message.getMessage());
-            })
-        });
+  if (_connectionType == "BLE") {
+    if (!bleConnection.isReady)
+      showToast("please connect with module to send data");
+    else {
+      checkPermission(context).then((value) => {
+            if (value)
+              bluetoothLocationAreEnable(context).then((value) {
+                bleConnection.writeData(message.getMessage());
+              })
+          });
+    }
+  } else if (_connectionType == "WIFI") {
+    if (!wifiConnection.getIsReady)
+      showToast("please connect with module to send data");
+    else {
+      wifiConnection.writeData(message.getMessage());
+    }
   }
 }

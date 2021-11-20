@@ -4,24 +4,24 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hexabitz_demo_app/providers/wifi_connection_provider.dart';
 import 'package:hexabitz_demo_app/ui/hexabitz_cells_screen.dart';
-
+import 'package:hexabitz_demo_app/ui/item/connection_type.dart';
 import 'package:hexabitz_demo_app/ui/splash_screen.dart';
-import 'package:hexabitz_demo_app/utilities/utilities.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-
 import 'connection/bluetooth/BluetoothConnection.dart';
 import 'database/init.dart';
 import 'providers/ble_connection_provider.dart';
+import 'package:hexabitz_demo_app/utilities/utilities.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
         create: (ctx) => BleConnection(),
+      ),
+      ChangeNotifierProvider(
+        create: (ctx) => WIFIConnection(),
       ),
     ],
     child: MyApp(),
@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {"/connection-type": (context) => ConnectionType()},
       debugShowCheckedModeBanner: false,
     );
   }
@@ -131,13 +132,13 @@ class _SecondScreenState extends State<SecondScreen> {
           closedBuilder: (BuildContext c, VoidCallback action) {
             return FloatingActionButton(
               isExtended: true,
-              onPressed: () => checkPermission(context).then((value1) => {
-                    if (value1)
-                      bluetoothLocationAreEnable(context)
-                          .then((value2) => {if (value2) action()})
-                  }),
+              onPressed: () => action(),
               child: Icon(
-                Icons.wifi_tethering_off,
+                connectionType == "BLE"
+                    ? Icons.bluetooth_connected
+                    : connectionType == "WIFI"
+                        ? Icons.wifi
+                        : Icons.wifi_tethering_off,
                 color: Colors.white,
               ),
               tooltip: 'Bluetooth connection',
@@ -157,7 +158,7 @@ class _SecondScreenState extends State<SecondScreen> {
           tappable: false,
           transitionDuration: Duration(milliseconds: 800),
           openBuilder: (_, closeContainer) {
-            return BluetoothConnection();
+            return ConnectionType();
           }),
     );
   }

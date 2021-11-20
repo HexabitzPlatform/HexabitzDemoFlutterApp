@@ -12,6 +12,7 @@ import 'package:hexabitz_demo_app/providers/ble_connection_provider.dart';
 import 'package:hexabitz_demo_app/ui/item/custom%20_progress_button.dart';
 import 'package:hexabitz_demo_app/models/bluetooth_device_item.dart'
     as BLEDevice;
+import 'package:hexabitz_demo_app/utilities/utilities.dart';
 import 'package:provider/provider.dart';
 
 class BluetoothConnection extends StatefulWidget {
@@ -583,7 +584,10 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
   @override
   Widget build(BuildContext context) {
     final bleConnection = Provider.of<BleConnection>(context);
-    if (bleConnection.isReady) isTryToConnect = false;
+    if (bleConnection.isReady) {
+      isTryToConnect = false;
+      connectionType = "BLE";
+    }
     AppBar appBar = AppBar(
       actions: <Widget>[
         if (isSearching /* || isTryToConnect*/)
@@ -603,6 +607,7 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
       title: Text(
         "Bluetooth Connection",
         style: TextStyle(color: Colors.white),
+        textAlign: TextAlign.center,
       ),
     );
     return Scaffold(

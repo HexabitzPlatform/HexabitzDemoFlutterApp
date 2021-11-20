@@ -14,6 +14,7 @@ import 'package:hexabitz_demo_app/FLUTTER_WIRELESS_LIB/HexaInterface.dart';
 import 'package:hexabitz_demo_app/FLUTTER_WIRELESS_LIB/Message.dart';
 import 'package:hexabitz_demo_app/connection/wireless_connection.dart';
 import 'package:hexabitz_demo_app/providers/ble_connection_provider.dart';
+import 'package:hexabitz_demo_app/providers/wifi_connection_provider.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_drop_down_from_field.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_int_picker.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_rolling_switch.dart';
@@ -335,9 +336,15 @@ class _WeightModuleState extends State<WeightModule> {
                           width: 150,
                           color: Colors.grey.withOpacity(0.18),
                           padding: 4.0,
-                          child: Consumer<BleConnection>(
-                            builder: (ctx, bleConnection, child) => Text(
-                              bleConnection.getReadValue,
+                          child: Consumer2<BleConnection, WIFIConnection>(
+                            builder:
+                                (ctx, bleConnection, wifiConnection, child) =>
+                                    Text(
+                              connectionType == "BLE"
+                                  ? bleConnection.getReadValue
+                                  : connectionType == "WIFI"
+                                      ? wifiConnection.getReadValue
+                                      : "0",
                               style: GoogleFonts.odibeeSans(
                                 textStyle:
                                     Theme.of(context).textTheme.headline4,

@@ -22,6 +22,7 @@ class WIFIConnection with ChangeNotifier {
     Socket.connect("$_ipWifi", portIListenOn).then((sock) {
       _socket = sock;
       _isReady = true;
+      notifyListeners();
       _socket.listen(
         receiveMessage,
         onError: errorHandler,
@@ -90,6 +91,22 @@ class WIFIConnection with ChangeNotifier {
   List<String> get getIMUValue {
     _isThereValue = false;
     return _iMUValues;
+  }
+
+  bool get getIsReady {
+    return _isReady;
+  }
+
+  bool get getIsThereValue {
+    return _isThereValue;
+  }
+
+  set setIP(String ip) {
+    _ipWifi = ip;
+  }
+
+  set setPort(String port) {
+    _portWifi = port;
   }
 
   @override

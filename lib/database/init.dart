@@ -20,12 +20,14 @@ class Init {
     await appDir.create(recursive: true);
     final databasePath = join(appDir.path, "sembast.db");
     final database = await databaseFactoryIo.openDatabase(databasePath);
-    GetIt.I.registerSingleton<Database>(database);
+    if (!GetIt.I.isRegistered(instance: database))
+      GetIt.I.registerSingleton<Database>(database);
   }
 
   static _registerRepositories() {
-    GetIt.I.registerLazySingleton<RecentColorRepository>(
-        () => SembastRecentColorRepository());
+    if (!GetIt.I.isRegistered<RecentColorRepository>())
+      GetIt.I.registerLazySingleton<RecentColorRepository>(
+          () => SembastRecentColorRepository());
     //for BluetoothDevices
     if (!GetIt.I.isRegistered<BluetoothDeviceRepo>()) {
       GetIt.I.registerLazySingleton<BluetoothDeviceRepo>(

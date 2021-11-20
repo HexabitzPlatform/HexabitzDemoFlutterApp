@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexabitz_demo_app/FLUTTER_WIRELESS_LIB/HexaInterface.dart';
 import 'package:hexabitz_demo_app/providers/ble_connection_provider.dart';
+import 'package:hexabitz_demo_app/providers/wifi_connection_provider.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_drop_down_from_field.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_int_picker.dart';
 import 'package:hexabitz_demo_app/ui/item/custom_rolling_switch.dart';
@@ -320,10 +321,15 @@ class _IRSensorState extends State<IRSensor> {
                       //margin: EdgeInsets.only(top: 60),
                       child: Align(
                         alignment: AlignmentDirectional.center,
-                        child: Consumer<BleConnection>(
-                          builder: (ctx, bleConnection, child) {
-                            if (bleConnection.isThereValue)
-                              _updateDataSource(bleConnection.getReadValue);
+                        child: Consumer2<BleConnection, WIFIConnection>(
+                          builder: (ctx, bleConnection, wifiConnection, child) {
+                            if (connectionType == "BLE") {
+                              if (bleConnection.isThereValue)
+                                _updateDataSource(bleConnection.getReadValue);
+                            } else if (connectionType == "WIFI") {
+                              if (wifiConnection.getIsThereValue)
+                                _updateDataSource(wifiConnection.getReadValue);
+                            }
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
