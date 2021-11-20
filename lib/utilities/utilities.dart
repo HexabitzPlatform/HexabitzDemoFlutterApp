@@ -97,7 +97,7 @@ void showToast(String text) {
 void sendMessage(BuildContext context, int destination, int source, int code,
     List<int> payload) {
   final bleConnection = Provider.of<BleConnection>(context, listen: false);
-  final wifiConnection = Provider.of<WIFIConnection>(context);
+  final wifiConnection = Provider.of<WIFIConnection>(context, listen: false);
   String opt8NextMessage = "0";
   String opt67ResponseOptions = "01";
   String opt5Reserved = "0";
