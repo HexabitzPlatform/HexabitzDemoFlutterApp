@@ -15,7 +15,7 @@ class RGBLedModule extends StatefulWidget {
 }
 
 class _RGBLedModuleState extends State<RGBLedModule> {
-  int destination = 2, source = 1;
+  int destination = 2, source = 1, port = 6, module = 1;
   List<int> message = [], payload = [];
   Color ledColor = Colors.transparent;
   int colorCode;
@@ -40,7 +40,13 @@ class _RGBLedModuleState extends State<RGBLedModule> {
   void _setSource(int value) {
     source = value;
   }
+  void _setPort(int value) {
+    port = value;
+  }
 
+  void _setModule(int value) {
+    module = value;
+  }
   CustomColorPicker _colorPicker;
   @override
   void initState() {
@@ -247,10 +253,15 @@ class _RGBLedModuleState extends State<RGBLedModule> {
                 child: Column(
               children: [
                 CustomIntegerPicker(
-                    source: source,
-                    setSource: _setSource,
-                    destination: destination,
-                    setDestination: _setDestination),
+                  source: source,
+                  setSource: _setSource,
+                  destination: destination,
+                  setDestination: _setDestination,
+                  port: port,
+                  setPort: _setPort,
+                  module: module,
+                  setModule: _setModule,
+                ),
                 SizedBox(
                   height: 10,
                 ),

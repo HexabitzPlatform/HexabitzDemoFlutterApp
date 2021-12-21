@@ -590,7 +590,7 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
     }
     AppBar appBar = AppBar(
       actions: <Widget>[
-        if (isSearching /* || isTryToConnect*/)
+        if (isSearching || isTryToConnect)
           Container(
             width: 60,
             height: 40,
@@ -649,7 +649,7 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
         onPressed: () {
           if (!isSearching) scanBluetoothDevices();
         },
-        tooltip: 'Increment',
+        tooltip: 'Research',
         backgroundColor:
             isSearching ? Colors.grey : Theme.of(context).primaryColor,
         child: Icon(

@@ -24,7 +24,7 @@ class _RelayACModulesState extends State<RelayACModules> {
 
   bool _validateTimeOutText = false;
 
-  int destination = 2, source = 1;
+  int destination = 2, source = 1, port = 6, module = 1;
 
   bool isRunning = false;
   void _setDestination(int value) {
@@ -33,6 +33,14 @@ class _RelayACModulesState extends State<RelayACModules> {
 
   void _setSource(int value) {
     source = value;
+  }
+
+  void _setPort(int value) {
+    port = value;
+  }
+
+  void _setModule(int value) {
+    module = value;
   }
 
   @override
@@ -254,10 +262,15 @@ class _RelayACModulesState extends State<RelayACModules> {
                 child: Column(
               children: [
                 CustomIntegerPicker(
-                    source: source,
-                    setSource: _setSource,
-                    destination: destination,
-                    setDestination: _setDestination),
+                  source: source,
+                  setSource: _setSource,
+                  destination: destination,
+                  setDestination: _setDestination,
+                  port: port,
+                  setPort: _setPort,
+                  module: module,
+                  setModule: _setModule,
+                ),
                 SizedBox(
                   height: 10,
                 ),

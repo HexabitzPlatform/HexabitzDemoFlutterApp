@@ -34,7 +34,7 @@ class WeightModule extends StatefulWidget {
 
 class _WeightModuleState extends State<WeightModule> {
   String scaleUnitCodeString = "Gram";
-  int destination = 2, source = 1;
+  int destination = 2, source = 1, port = 6, module = 1;
   int scaleUnitCode = HexaInterface.CODE_H26R0_STREAM_PORT_GRAM;
   bool isInfiniteTime = false;
   List<int> message = [], payload = [];
@@ -52,6 +52,14 @@ class _WeightModuleState extends State<WeightModule> {
 
   void _setSource(int value) {
     source = value;
+  }
+
+  void _setPort(int value) {
+    port = value;
+  }
+
+  void _setModule(int value) {
+    module = value;
   }
 
   @override
@@ -516,10 +524,15 @@ class _WeightModuleState extends State<WeightModule> {
                 child: Column(
               children: [
                 CustomIntegerPicker(
-                    source: source,
-                    setSource: _setSource,
-                    destination: destination,
-                    setDestination: _setDestination),
+                  source: source,
+                  setSource: _setSource,
+                  destination: destination,
+                  setDestination: _setDestination,
+                  port: port,
+                  setPort: _setPort,
+                  module: module,
+                  setModule: _setModule,
+                ),
                 SizedBox(
                   height: 10,
                 ),

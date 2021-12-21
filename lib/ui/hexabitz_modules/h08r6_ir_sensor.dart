@@ -24,7 +24,7 @@ class IRSensor extends StatefulWidget {
 
 class _IRSensorState extends State<IRSensor> {
   String iRUnitCodeString = "MM";
-  int destination = 2, source = 1;
+  int destination = 2, source = 1, port = 6, module = 1;
   int iRUnitCode = HexaInterface.CODE_H26R0_STREAM_PORT_GRAM;
   bool isInfiniteTime = false;
   List<int> message = [], payload = [0];
@@ -66,6 +66,14 @@ class _IRSensorState extends State<IRSensor> {
 
   void _setSource(int value) {
     source = value;
+  }
+
+  void _setPort(int value) {
+    port = value;
+  }
+
+  void _setModule(int value) {
+    module = value;
   }
 
   @override
@@ -452,6 +460,8 @@ class _IRSensorState extends State<IRSensor> {
                                         timeBytes = Uint8List.fromList(
                                             [255, 255, 255, 255]);
                                       payload = [
+                                        port,
+                                        module,
                                         periodBytes[3],
                                         periodBytes[2],
                                         periodBytes[1],
@@ -460,8 +470,6 @@ class _IRSensorState extends State<IRSensor> {
                                         timeBytes[2],
                                         timeBytes[1],
                                         timeBytes[0],
-                                        6,
-                                        1
                                       ];
                                       sendMessage(context, destination, source,
                                           iRUnitCode, payload);
@@ -574,10 +582,15 @@ class _IRSensorState extends State<IRSensor> {
                 child: Column(
               children: [
                 CustomIntegerPicker(
-                    source: source,
-                    setSource: _setSource,
-                    destination: destination,
-                    setDestination: _setDestination),
+                  source: source,
+                  setSource: _setSource,
+                  destination: destination,
+                  setDestination: _setDestination,
+                  port: port,
+                  setPort: _setPort,
+                  module: module,
+                  setModule: _setModule,
+                ),
                 SizedBox(
                   height: 10,
                 ),

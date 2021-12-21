@@ -23,7 +23,7 @@ class IMUModule extends StatefulWidget {
 
 class _IMUModuleState extends State<IMUModule> {
   String iMUUnitCodeString = "Gyroscope";
-  int destination = 2, source = 1;
+  int destination = 2, source = 1, port = 6, module = 1;
   int iMUUnitCode = HexaInterface.CODE_H0BR4_STREAM_GYRO;
   bool isInfiniteTime = false;
   List<int> message = [], payload = [0];
@@ -53,6 +53,14 @@ class _IMUModuleState extends State<IMUModule> {
 
   void _setSource(int value) {
     source = value;
+  }
+
+  void _setPort(int value) {
+    port = value;
+  }
+
+  void _setModule(int value) {
+    module = value;
   }
 
   @override
@@ -654,10 +662,15 @@ class _IMUModuleState extends State<IMUModule> {
                 child: Column(
               children: [
                 CustomIntegerPicker(
-                    source: source,
-                    setSource: _setSource,
-                    destination: destination,
-                    setDestination: _setDestination),
+                  source: source,
+                  setSource: _setSource,
+                  destination: destination,
+                  setDestination: _setDestination,
+                  port: port,
+                  setPort: _setPort,
+                  module: module,
+                  setModule: _setModule,
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -793,6 +806,8 @@ class _IMUModuleState extends State<IMUModule> {
     if (isInfiniteTime) timeBytes = Uint8List.fromList([255, 255, 255, 255]);
     //port , module ,periodBytes,
     payload = [
+      port,
+      module,
       periodBytes[3],
       periodBytes[2],
       periodBytes[1],
@@ -801,8 +816,6 @@ class _IMUModuleState extends State<IMUModule> {
       timeBytes[2],
       timeBytes[1],
       timeBytes[0],
-      6,
-      1
     ];
     sendMessage(context, destination, source, iMUUnitCode, payload);
   }
